@@ -1,25 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import Ler from './Components/Ler'
+import Remover from './Components/Remover'
+import Adicionar from './Components/Adicionar'
+
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+interface Store {
+  quantidade: number
+}
+
+const initialState: Store = {
+  quantidade: 0
+}
+
+function reducer(state = initialState, action: any) {
+  switch(action.type) {
+    case 'REMOVER_UNIDADE':
+      return {
+        quantidade: state.quantidade > 0 ? state.quantidade - 1 : state.quantidade,
+      };
+    case 'ADICIONAR_UNIDADE':
+      return {
+        quantidade: state.quantidade + 1,
+      };
+    default:
+      return state
+  }
+}
+
+const store = createStore(reducer)
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Ler />
+      <Remover />
+      <Adicionar />
+    </Provider>
   );
 }
 
